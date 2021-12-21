@@ -6,6 +6,8 @@ import com.ipiecoles.java.java350.model.Entreprise;
 import com.ipiecoles.java.java350.model.NiveauEtude;
 import com.ipiecoles.java.java350.model.Poste;
 import com.ipiecoles.java.java350.repository.EmployeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.time.LocalDate;
 @Service
 public class EmployeService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private EmployeRepository employeRepository;
 
@@ -31,18 +34,22 @@ public class EmployeService {
      * @throws EntityExistsException Si le matricule correspond à un employé existant
      */
     public void embaucheEmploye(String nom, String prenom, Poste poste, NiveauEtude niveauEtude, Double tempsPartiel) throws EmployeException, EntityExistsException {
+        logger.info("Embauche de l'employé {} {} diplômé de {} en tant que {} avec un taux d'activité de {} ", prenom, nom, niveauEtude.name(), poste.name(), tempsPartiel);
 
         //Récupération du type d'employé à partir du poste
         String typeEmploye = poste.name().substring(0,1);
 
         //Récupération du dernier matricule...
+        logger.info("Récupération d'un nouveau matricule pour l'employé " + nom + " " + prenom + " en cours...");
         String lastMatricule = employeRepository.findLastMatricule();
         if(lastMatricule == null){
+            logger.warn("Aucun matricule trouvé");
             lastMatricule = Entreprise.MATRICULE_INITIAL;
         }
         //... et incrémentation
         Integer numeroMatricule = Integer.parseInt(lastMatricule) + 1;
         if(numeroMatricule >= 100000){
+            logger.error("Limite des 100000 matricules atteinte !");
             throw new EmployeException("Limite des 100000 matricules atteinte !");
         }
         //On complète le numéro avec des 0 à gauche
@@ -51,20 +58,23 @@ public class EmployeService {
 
         //On vérifie l'existence d'un employé avec ce matricule
         if(employeRepository.findByMatricule(matricule) != null){
+            logger.error("L'employé de matricule " + matricule + " existe déjà en BDD");
             throw new EntityExistsException("L'employé de matricule " + matricule + " existe déjà en BDD");
         }
 
         //Calcul du salaire
+        logger.info("Calcul du salaire de l'employé " + nom + " " + prenom + " en cours...");
         Double salaire = Entreprise.COEFF_SALAIRE_ETUDES.get(niveauEtude) * Entreprise.SALAIRE_BASE;
         if(tempsPartiel != null){
             salaire = salaire * tempsPartiel;
         }
+        salaire = Math.round(salaire*100d)/100d;
 
         //Création et sauvegarde en BDD de l'employé.
         Employe employe = new Employe(nom, prenom, matricule, LocalDate.now(), salaire, Entreprise.PERFORMANCE_BASE, tempsPartiel);
 
         employeRepository.save(employe);
-
+        logger.info("Création de l'employé " + nom + " " + prenom + " sauvegardé avec succès");
     }
 
 
