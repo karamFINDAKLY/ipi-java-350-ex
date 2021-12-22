@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -44,33 +45,46 @@ public class Employe {
     }
 
     /**
-     * Méthode calculant le nombre d'années d'ancienneté à partir de la date d'embauche
-     * @return
+     * Retourne le nombre d'année d'ancienneté de l'employé par rapport à sa date d'embauche (on ne prend pas en compte
+     * les mois et les jours. Il faut en revanche que la d'embauche soit non nulle et l'année antérieure à l'année courante
+     * sinon on renvoie une ancienneté de 0
+     *
+     * @return le nombre d'année d'ancienneté
      */
-    public Integer getNombreAnneeAnciennete() {
-        return LocalDate.now().getYear() - dateEmbauche.getYear();
+    public final Integer getNombreAnneeAnciennete() {
+        return dateEmbauche != null && LocalDate.now().getYear() >= dateEmbauche.getYear() ? LocalDate.now().getYear() - dateEmbauche.getYear() : 0;
     }
 
     public Integer getNbConges() {
         return Entreprise.NB_CONGES_BASE + this.getNombreAnneeAnciennete();
     }
 
-    public Integer getNbRtt(){
+    /**
+     * Nombre de jours de RTT =
+     *   Nombre de jours dans l'année
+     * – plafond maximal du forfait jours de la convention collective
+     * – nombre de jours de repos hebdomadaires
+     * – jours de congés payés
+     * – nombre de jours fériés tombant un jour ouvré
+     *
+     * Au prorata de son pourcentage d'activité (arrondi au supérieur)
+     *
+     * @return le nombre de jours de RTT
+     * @param date
+     */
+    public Integer getNbRtt(Date date){
         return getNbRtt(LocalDate.now());
     }
 
     public Integer getNbRtt(LocalDate d){
-        int i1 = d.isLeapYear() ? 365 : 366;int var = 104;
+        int i1 = d.isLeapYear() ? 365 : 366;
+        int var = 104;
         switch (LocalDate.of(d.getYear(),1,1).getDayOfWeek()){
-        case THURSDAY: if(d.isLeapYear()) var =  var + 1; break;
-        case FRIDAY:
-        if(d.isLeapYear()) var =  var + 2;
-        else var =  var + 1;
-case SATURDAY:var = var + 1;
-                    break;
+            case THURSDAY: if(d.isLeapYear()) var =  var + 1; break;
+            case FRIDAY: if(d.isLeapYear()) var =  var + 2; else var =  var + 1;
+            case SATURDAY: var = var + 1; break;
         }
-        int monInt = (int) Entreprise.joursFeries(d).stream().filter(localDate ->
-                localDate.getDayOfWeek().getValue() <= DayOfWeek.FRIDAY.getValue()).count();
+        int monInt = (int) Entreprise.joursFeries(d).stream().filter(localDate -> localDate.getDayOfWeek().getValue() <= DayOfWeek.FRIDAY.getValue()).count();
         return (int) Math.ceil((i1 - Entreprise.NB_JOURS_MAX_FORFAIT - var - Entreprise.NB_CONGES_BASE - monInt) * tempsPartiel);
     }
 
@@ -86,7 +100,6 @@ case SATURDAY:var = var + 1;
      *
      * @return la prime annuelle de l'employé en Euros et cents
      */
-    //Matricule, performance, date d'embauche, temps partiel, prime
     public Double getPrimeAnnuelle(){
         //Calcule de la prime d'ancienneté
         Double primeAnciennete = Entreprise.PRIME_ANCIENNETE * this.getNombreAnneeAnciennete();
@@ -106,11 +119,14 @@ case SATURDAY:var = var + 1;
             prime = Entreprise.primeAnnuelleBase() * (this.performance + Entreprise.INDICE_PRIME_BASE) + primeAnciennete;
         }
         //Au pro rata du temps partiel.
-        return prime * this.tempsPartiel;
+        return Math.round(prime * this.tempsPartiel * 100)/100.0;
     }
 
     //Augmenter salaire
-    //public void augmenterSalaire(double pourcentage){}
+    public void augmenterSalaire(double pourcentage){
+
+        this.salaire = salaire * (1 + (pourcentage/100));
+    }
 
     public Long getId() {
         return id;
@@ -130,9 +146,8 @@ case SATURDAY:var = var + 1;
     /**
      * @param nom the nom to set
      */
-    public Employe setNom(String nom) {
+    public void setNom(String nom) {
         this.nom = nom;
-        return this;
     }
 
     /**
@@ -225,4 +240,21 @@ case SATURDAY:var = var + 1;
     public int hashCode() {
         return Objects.hash(id, nom, prenom, matricule, dateEmbauche, salaire, performance);
     }
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Employe{");
+        sb.append("id=").append(id);
+        sb.append(", nom='").append(nom).append('\'');
+        sb.append(", prenom='").append(prenom).append('\'');
+        sb.append(", matricule='").append(matricule).append('\'');
+        sb.append(", dateEmbauche=").append(dateEmbauche);
+        sb.append(", salaire=").append(salaire);
+        sb.append(", performance=").append(performance);
+        sb.append(", tempsPartiel=").append(tempsPartiel);
+        sb.append('}');
+        return sb.toString();
+    }
+
+
+
 }
