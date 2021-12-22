@@ -52,7 +52,13 @@ public class Employe {
      * @return le nombre d'année d'ancienneté
      */
     public final Integer getNombreAnneeAnciennete() {
-        return dateEmbauche != null && LocalDate.now().getYear() >= dateEmbauche.getYear() ? LocalDate.now().getYear() - dateEmbauche.getYear() : 0;
+        if(this.dateEmbauche == null){
+            return null;
+        }
+        if (dateEmbauche.isAfter(LocalDate.now())){
+            return 0;
+        }
+        return LocalDate.now().getYear() - dateEmbauche.getYear();
     }
 
     public Integer getNbConges() {
@@ -124,8 +130,9 @@ public class Employe {
 
     //Augmenter salaire
     public void augmenterSalaire(double pourcentage){
-
-        this.salaire = salaire * (1 + (pourcentage/100));
+        if (pourcentage > 0  && this.salaire != null) {
+            this.salaire = salaire * (1 + (pourcentage / 100));
+        }
     }
 
     public Long getId() {

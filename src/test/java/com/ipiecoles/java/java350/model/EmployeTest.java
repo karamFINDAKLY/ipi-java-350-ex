@@ -7,57 +7,54 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Date;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeTest {
 
     @Test
-
     void getNombreAnneeAnciennete() {
         //Given
             Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 2599d, 1,1.4);
         //When
-            Integer nbAnnees = employe.getNombreAnneeAnciennete();
+            int nbAnnees = employe.getNombreAnneeAnciennete();
         //Then
 
         Assertions.assertThat(nbAnnees).isEqualTo(3);
     }
-
-
+    /*
     @Test
-    void testSalaire() {
-        double untaireٍsalaire = 0;
-        double persntageaugmentaion = 5.0;
-        //Given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1000d, 1,1.4);
-         untaireٍsalaire = employe.getSalaire()  * (1 + (persntageaugmentaion/100));
+    void getNombreAnneeAncienneteNull(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T12345", null, 2599d, 1, 1.0);
 
-        //When
-        employe.augmenterSalaire(5.0);
-        //Then
-        Assertions.assertThat(employe.getSalaire()).isEqualTo(untaireٍsalaire);
+        //when
+        int nbAnnee = employe.getNombreAnneeAnciennete();
 
-
-    }
+        //then
+        Assertions.assertThat(nbAnnee).isNull();
+    }*/
     @Test
-    void testSalaireZero() {
-        double untaireٍsalaire = 0;
-        double persntageaugmentaion = 5.0;
-        //Given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 0d, 1,1.4);
-        untaireٍsalaire = employe.getSalaire()  * (1 + (persntageaugmentaion/100));
+    void getNombreAnneeAncienneteFeutre(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T12345", LocalDate.now().plusYears(1), 2599d, 1, 1.0);
 
-        //When
-        employe.augmenterSalaire(5.0);
-        //Then
-        Assertions.assertThat(employe.getSalaire()).isEqualTo(untaireٍsalaire);
+        //when
+        int nbAnnee = employe.getNombreAnneeAnciennete();
 
-
+        //then
+        Assertions.assertThat(nbAnnee).isZero();
     }
 
+    @Test
+    void getNombreAnneeAncienneteZero() {
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T12333", LocalDate.now(), 2599d, 1, 1.4);
 
+        //when
+        int nbAnnee = employe.getNombreAnneeAnciennete();
+        //then
+        Assertions.assertThat(nbAnnee).isZero();
+    }
 
     @ParameterizedTest
     @CsvSource({
@@ -84,27 +81,80 @@ class EmployeTest {
 
     }
 
-
-        //Gigen
-
-        //When
-
-        //Then
-
-
     @Test
-    public void getNombreAnneeAncienneteNull(){
+    void testAugmenterSalaire() {
+        double untaireٍsalaire = 0;
+        double persntageaugmentaion = 5.0;
         //Given
-        Employe e = new Employe();
-        e.setDateEmbauche(null);
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1000d, 1,1.4);
+        untaireٍsalaire = employe.getSalaire()  * (1 + (persntageaugmentaion/100));
 
         //When
-        Integer anneeAnciennete = e.getNombreAnneeAnciennete();
-
+        employe.augmenterSalaire(5.0);
         //Then
-        Assertions.assertThat( anneeAnciennete).isZero();
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(untaireٍsalaire);
+
+
+    }
+    @Test
+    void augmenterSalaireZero() {
+        double untaireٍsalaire = 0;
+        double persntageaugmentaion = 5.0;
+        //Given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 0d, 1,1.4);
+        untaireٍsalaire = employe.getSalaire()  * (1 + (persntageaugmentaion/100));
+
+        //When
+        employe.augmenterSalaire(5.0);
+        //Then
+        Assertions.assertThat(employe.getSalaire()).isZero();
+    }
+    @Test
+    void augmenterSalairePourcentageNegatif(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+        Double salaireSmic = 1500.0;
+        //when
+        employe.augmenterSalaire(-3d);
+
+        //then
+        Assertions.assertThat(employe.getSalaire()).isEqualTo(employe.getSalaire());
+    }
+    @Test
+    void augmenterSalaireNull(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), null, 1,1.4);
+        //when
+        employe.augmenterSalaire(10d);
+        //then
+        Assertions.assertThat(employe.getSalaire()).isNull();
     }
 
+    @ParameterizedTest(name = "date : {0} nbRTT : {1}")
+    @CsvSource({
+            "2019, 10",
+            "2021, 9",
+            "2022, 10",
+            "2032, 12",
+            "2016, 5", /* pour cas de Vendredi */
+            "2026, 8" /* pour cas de Jeudi*/
+    })
+    @Test
+    void getNbConges(){
+        //given
+        Employe employe = new Employe("nico", "nel", "R123", LocalDate.now().minusYears(4), 2000d, 1, 1.0);        //when
+        int nbconges = employe.getNbConges();
+        //then
+        Assertions.assertThat(nbconges).isEqualTo(29);
+    }
+    void getNbRtt(Integer dateReference, Integer nbAttendu){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432",LocalDate.now().minusYears(8), 1000d, 1,1.4);
 
+        //when
+        int nbRTT = employe.getNbRtt(LocalDate.of(dateReference, 3, 2));
 
+        //then
+        Assertions.assertThat(nbRTT).isEqualTo(nbAttendu);
+    }
 }
