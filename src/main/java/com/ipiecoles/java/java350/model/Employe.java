@@ -76,9 +76,9 @@ public class Employe {
      * Au prorata de son pourcentage d'activité (arrondi au supérieur)
      *
      * @return le nombre de jours de RTT
-     * @param date
+     * @param
      */
-    public Integer getNbRtt(Date Date){
+    public Integer getNbRtt(){
         return getNbRtt(LocalDate.now());
     }
 

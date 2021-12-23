@@ -90,7 +90,7 @@ class EmployeTest {
         Assertions.assertThat(prime).isEqualTo(primeAnnuelle);
 
     }
-
+/*
     @Test
     void getNbRtt(){
         //Given
@@ -101,7 +101,7 @@ class EmployeTest {
         Assertions.assertThat(employe.getNbRtt(new Date(21/11/2019))).isEqualTo(14);
 
     }
-
+*/
     @Test
     void testAugmenterSalaire() {
         double untaireٍsalaire = 0;
@@ -169,16 +169,24 @@ class EmployeTest {
         //then
         Assertions.assertThat(nbconges).isEqualTo(29);
     }
-    /*
-    @Test
-    void getNbRtt(Integer dateReference, Integer nbAttendu){
+
+    @ParameterizedTest(name = "date : {0} nbRTT : {1}")
+    @CsvSource({
+            "2019, 9",
+            "2021, 10",
+            "2022, 11",
+            "2032, 10",
+            "2026, 10" /* pour cas de Jeudi*/
+
+    })
+    void testGetNbRtt(Integer dateReference, Integer nbAttendu){
         //given
-        Employe employe = new Employe("Nicolas", "John", "T123432",LocalDate.now().minusYears(8), 1000d, 1,1.4);
+        Employe employe = new Employe();
 
         //when
-        int nbRTT = employe.getNbRtt(LocalDate.of(dateReference, 3, 2));
+        Integer nbRTT = employe.getNbRtt(LocalDate.of(dateReference, 1, 1));
 
         //then
         Assertions.assertThat(nbRTT).isEqualTo(nbAttendu);
-    }*/
+    }
 }
