@@ -56,6 +56,16 @@ class EmployeTest {
         //then
         Assertions.assertThat(nbAnnee).isZero();
     }
+    @Test
+    void testNombreAnneeAncienneteDansLePasse(){
+        //given
+        Employe employe= new Employe();
+        employe.setDateEmbauche(LocalDate.now().minusYears(2));
+        //when
+        Integer nombreAnneeAnciennete = employe.getNombreAnneeAnciennete();
+        //then
+        Assertions.assertThat(nombreAnneeAnciennete).isEqualTo(2);
+    }
 
     @ParameterizedTest
     @CsvSource({
