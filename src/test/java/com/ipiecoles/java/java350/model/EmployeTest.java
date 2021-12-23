@@ -92,6 +92,17 @@ class EmployeTest {
 
     }
 
+    public void getPrimeAnnuelleM(){
+        //Given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1000d, 1,1.4);
+
+        //When
+        employe.setMatricule("M123");
+        String mat = "M123";
+
+        //Then
+        Assertions.assertThat(mat).isEqualTo(employe.getMatricule());
+    }
 /*
     @Test
     void getNbRtt(){
@@ -110,6 +121,7 @@ class EmployeTest {
         double persntageaugmentaion = 5.0;
         //Given
         Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1000d, 1,1.4);
+        employe.setSalaire(1200d);
         untaireٍsalaire = employe.getSalaire()  * (1 + (persntageaugmentaion/100));
 
         //When
@@ -152,6 +164,29 @@ class EmployeTest {
         //then
         Assertions.assertThat(employe.getSalaire()).isNull();
     }
+    @Test
+    void testNom(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+        //when
+        employe.setNom("karam");
+        String nom ="karam";
+
+        //then
+        Assertions.assertThat(nom).isEqualTo(employe.getNom());
+    }
+    @Test
+    void testPrenom(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+        //when
+        employe.setPrenom("FINDAKLY");
+        String prenom ="FINDAKLY";
+
+        //then
+        Assertions.assertThat(prenom).isEqualTo(employe.getPrenom());
+    }
+
 
     @ParameterizedTest(name = "date : {0} nbRTT : {1}")
     @CsvSource({
@@ -214,26 +249,5 @@ class EmployeTest {
         //then
         Assertions.assertThat(idPut).isEqualTo(employe.getId());
     }
-    @Test
-    void testNom(){
-        //given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-        //when
-        employe.setNom("karam");
-        String nom ="karam";
 
-        //then
-        Assertions.assertThat(nom).isEqualTo(employe.getNom());
-    }
-    @Test
-    void testPrenom(){
-        //given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-        //when
-        employe.setPrenom("FINDAKLY");
-        String prenom ="FINDAKLY";
-
-        //then
-        Assertions.assertThat(prenom).isEqualTo(employe.getPrenom());
-    }
 }
