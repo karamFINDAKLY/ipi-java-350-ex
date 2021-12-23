@@ -70,14 +70,14 @@ class EmployeTest {
     @CsvSource({
             "1, 'T12345', 0, 1.0, 1000.0",
             "1, 'T12345', 2, 0.5, 600.0",
-            "1, 'T12345', 2, 1.0, 1200" +
-                    ".0",
+            "1, 'T12345', 2, 1.0, 1200.0",
             "2, 'T12345', 0, 1.0, 2300.0",
             "2, 'T12345', 1, 1.0, 2400.0",
             "1, 'M12345', 0, 1.0, 1700.0",
             "1, 'M12345', 5, 1.0, 2200.0",
             "2, 'M12345', 0, 1.0, 1700.0",
-            "2, 'M12345', 8, 1.0, 2500.0"
+            "2, 'M12345', 8, 1.0, 2500.0",
+            " , 'M12345', 8, 1.0, 2500.0"
     })
     public void getPrimeAnnuelle(Integer performance, String matricule, Long nbYearsAnciennete, Double tempsPartiel, Double primeAnnuelle){
         //Given
@@ -90,6 +90,7 @@ class EmployeTest {
         Assertions.assertThat(prime).isEqualTo(primeAnnuelle);
 
     }
+
 /*
     @Test
     void getNbRtt(){
@@ -173,7 +174,7 @@ class EmployeTest {
     @ParameterizedTest(name = "date : {0} nbRTT : {1}")
     @CsvSource({
             "2019, 9",
-            "2021, 10",
+            "2021, 11",
             "2022, 11",
             "2032, 10",
             "2026, 10" /* pour cas de Jeudi*/
@@ -184,9 +185,30 @@ class EmployeTest {
         Employe employe = new Employe();
 
         //when
-        Integer nbRTT = employe.getNbRtt(LocalDate.of(dateReference, 1, 1));
+        int nbRTT = employe.getNbRtt(LocalDate.of(dateReference, 1, 1));
 
         //then
         Assertions.assertThat(nbRTT).isEqualTo(nbAttendu);
+    }
+    @Test
+    void testId(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+
+        //when
+        Long id = employe.getId();
+        //then
+        Assertions.assertThat(id).isEqualTo(null);
+    }
+    @Test
+    void testPutID(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+
+        //when
+         employe.setId(123l);
+         Long idPut = (123l);
+        //then
+        Assertions.assertThat(idPut).isEqualTo(employe.getId());
     }
 }
