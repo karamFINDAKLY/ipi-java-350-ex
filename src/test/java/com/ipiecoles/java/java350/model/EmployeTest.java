@@ -80,7 +80,7 @@ class EmployeTest {
             " , 'M12345', 8, 1.0, 2500.0",
             ", 'M12345', 8, 1.0, 2500.0"
     })
-    public void getPrimeAnnuelle(Integer performance, String matricule, Long nbYearsAnciennete, Double tempsPartiel, Double primeAnnuelle){
+     void getPrimeAnnuelle(Integer performance, String matricule, Long nbYearsAnciennete, Double tempsPartiel, Double primeAnnuelle){
         //Given
         Employe employe = new Employe("Doe", "John", matricule, LocalDate.now().minusYears(nbYearsAnciennete), null, performance, tempsPartiel);
 
@@ -235,7 +235,7 @@ class EmployeTest {
         Long id = employe.getId();
 
         //then
-        Assertions.assertThat(id).isEqualTo(null);
+        Assertions.assertThat(id).isNull();
     }
     @Test
     void testPutID(){
