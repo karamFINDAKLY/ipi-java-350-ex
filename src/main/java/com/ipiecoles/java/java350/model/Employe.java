@@ -78,7 +78,7 @@ public class Employe {
      * @return le nombre de jours de RTT
      * @param date
      */
-    public Integer getNbRtt(Date date){
+    public Integer getNbRtt(Date Date){
         return getNbRtt(LocalDate.now());
     }
 
