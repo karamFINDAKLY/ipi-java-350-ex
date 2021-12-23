@@ -81,6 +81,7 @@ class EmployeTest {
         Assertions.assertThat(prime).isEqualTo(primeAnnuelle);
 
     }
+
     @Test
     void getNbRtt(){
         //Given
@@ -147,17 +148,20 @@ class EmployeTest {
             "2021, 9",
             "2022, 10",
             "2032, 12",
-            "2016, 5", /* pour cas de Vendredi */
-            "2026, 8" /* pour cas de Jeudi*/
+            "2016, 5",
+            "2026, 8"
     })
     @Test
     void getNbConges(){
         //given
-        Employe employe = new Employe("nico", "nel", "R123", LocalDate.now().minusYears(4), 2000d, 1, 1.0);        //when
+        Employe employe = new Employe("nico", "nel", "R123", LocalDate.now().minusYears(4), 2000d, 1, 1.0);
+        //when
         int nbconges = employe.getNbConges();
         //then
         Assertions.assertThat(nbconges).isEqualTo(29);
     }
+    /*
+    @Test
     void getNbRtt(Integer dateReference, Integer nbAttendu){
         //given
         Employe employe = new Employe("Nicolas", "John", "T123432",LocalDate.now().minusYears(8), 1000d, 1,1.4);
@@ -167,5 +171,5 @@ class EmployeTest {
 
         //then
         Assertions.assertThat(nbRTT).isEqualTo(nbAttendu);
-    }
+    }*/
 }
