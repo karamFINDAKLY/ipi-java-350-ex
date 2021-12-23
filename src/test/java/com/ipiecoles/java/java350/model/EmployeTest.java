@@ -22,18 +22,17 @@ class EmployeTest {
 
         Assertions.assertThat(nbAnnees).isEqualTo(3);
     }
-    /*
+
     @Test
-    void getNombreAnneeAncienneteNull(){
+    void nombreAnneeAncienneteEgalNul(){
         //given
-        Employe employe = new Employe("Nicolas", "John", "T12345", null, 2599d, 1, 1.0);
-
+        Employe employe= new Employe();
+        employe.setDateEmbauche(null);
         //when
-        int nbAnnee = employe.getNombreAnneeAnciennete();
-
+        Integer nombreAnneeAnciennete = employe.getNombreAnneeAnciennete();
         //then
-        Assertions.assertThat(nbAnnee).isNull();
-    }*/
+        Assertions.assertThat(nombreAnneeAnciennete).isNull();
+    }
     @Test
     void getNombreAnneeAncienneteFeutre(){
         //given
@@ -161,7 +160,7 @@ class EmployeTest {
             "2016, 5",
             "2026, 8"
     })
-    @Test
+
     void getNbConges(){
         //given
         Employe employe = new Employe("nico", "nel", "R123", LocalDate.now().minusYears(4), 2000d, 1, 1.0);
