@@ -7,6 +7,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Date;
 
 
 class EmployeTest {
@@ -78,6 +79,16 @@ class EmployeTest {
 
         //Then
         Assertions.assertThat(prime).isEqualTo(primeAnnuelle);
+
+    }
+    @Test
+    void getNbRtt(){
+        //Given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1000d, 1,1.4);
+
+        //When
+      //  Date prime = new Date();
+        Assertions.assertThat(employe.getNbRtt(new Date(21/11/2019))).isEqualTo(14);
 
     }
 
