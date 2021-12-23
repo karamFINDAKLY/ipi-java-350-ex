@@ -77,11 +77,12 @@ class EmployeTest {
             "1, 'M12345', 5, 1.0, 2200.0",
             "2, 'M12345', 0, 1.0, 1700.0",
             "2, 'M12345', 8, 1.0, 2500.0",
-            " , 'M12345', 8, 1.0, 2500.0"
+            " , 'M12345', 8, 1.0, 2500.0",
+            ", 'M12345', 8, 1.0, 2500.0"
     })
     public void getPrimeAnnuelle(Integer performance, String matricule, Long nbYearsAnciennete, Double tempsPartiel, Double primeAnnuelle){
         //Given
-        Employe employe = new Employe("Doe", "John", matricule, LocalDate.now().minusYears(nbYearsAnciennete), Entreprise.SALAIRE_BASE, performance, tempsPartiel);
+        Employe employe = new Employe("Doe", "John", matricule, LocalDate.now().minusYears(nbYearsAnciennete), null, performance, tempsPartiel);
 
         //When
         Double prime = employe.getPrimeAnnuelle();
@@ -177,6 +178,7 @@ class EmployeTest {
             "2021, 11",
             "2022, 11",
             "2032, 10",
+            "2020, 9",
             "2026, 10" /* pour cas de Jeudi*/
 
     })
@@ -194,9 +196,10 @@ class EmployeTest {
     void testId(){
         //given
         Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-
+        employe.getNom();
         //when
         Long id = employe.getId();
+
         //then
         Assertions.assertThat(id).isEqualTo(null);
     }
@@ -210,5 +213,27 @@ class EmployeTest {
          Long idPut = (123l);
         //then
         Assertions.assertThat(idPut).isEqualTo(employe.getId());
+    }
+    @Test
+    void testNom(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+        //when
+        employe.setNom("karam");
+        String nom ="karam";
+
+        //then
+        Assertions.assertThat(nom).isEqualTo(employe.getNom());
+    }
+    @Test
+    void testPrenom(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+        //when
+        employe.setPrenom("FINDAKLY");
+        String prenom ="FINDAKLY";
+
+        //then
+        Assertions.assertThat(prenom).isEqualTo(employe.getPrenom());
     }
 }
