@@ -197,7 +197,6 @@ class EmployeTest {
             "2016, 5",
             "2026, 8"
     })
-
     void getNbConges(){
         //given
         Employe employe = new Employe("nico", "nel", "R123", LocalDate.now().minusYears(4), 2000d, 1, 1.0);
@@ -242,12 +241,44 @@ class EmployeTest {
     void testPutID(){
         //given
         Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+        employe.setId(123l);
 
         //when
-         employe.setId(123l);
          Long idPut = (123l);
         //then
         Assertions.assertThat(idPut).isEqualTo(employe.getId());
     }
+    @Test
+    void testSetGetMatricule(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+        employe.setMatricule("T1211112");
 
+        //when
+        String idPut = ("T1211112");
+        //then
+        Assertions.assertThat(idPut).isEqualTo(employe.getMatricule());
+    }
+    @Test
+    void testSetGetPerformance(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+        employe.setPerformance(123);
+
+        //when
+        int per = (123);
+        //then
+        Assertions.assertThat(per).isEqualTo(employe.getPerformance());
+    }
+    @Test
+    void testSetGetTempsPartiel(){
+        //given
+        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
+        employe.setTempsPartiel(123d);
+
+        //when
+        double tem = (123d);
+        //then
+        Assertions.assertThat(tem).isEqualTo(employe.getTempsPartiel());
+    }
 }
