@@ -9,4 +9,10 @@ class EmployeServiceTest {
     @Test
     void calculPerformanceCommercial() {
     }
+
+    @Test
+    void testEmbaucheEmploye(){
+
+    }
+
 }

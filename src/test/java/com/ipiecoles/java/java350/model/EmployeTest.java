@@ -164,28 +164,7 @@ class EmployeTest {
         //then
         Assertions.assertThat(employe.getSalaire()).isNull();
     }
-    @Test
-    void testNom(){
-        //given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-        //when
-        employe.setNom("karam");
-        String nom ="karam";
 
-        //then
-        Assertions.assertThat(nom).isEqualTo(employe.getNom());
-    }
-    @Test
-    void testPrenom(){
-        //given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-        //when
-        employe.setPrenom("FINDAKLY");
-        String prenom ="FINDAKLY";
-
-        //then
-        Assertions.assertThat(prenom).isEqualTo(employe.getPrenom());
-    }
 
     @ParameterizedTest(name = "date : {0} nbRTT : {1}")
     @CsvSource({
@@ -226,58 +205,5 @@ class EmployeTest {
         //then
         Assertions.assertThat(nbRTT).isEqualTo(nbAttendu);
     }
-    @Test
-    void testId(){
-        //given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-        employe.getNom();
-        //when
-        Long id = employe.getId();
 
-        //then
-        Assertions.assertThat(id).isNull();
-    }
-    @Test
-    void testPutID(){
-        //given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-        employe.setId(123l);
-        //when
-         Long idPut = (123l);
-        //then
-        Assertions.assertThat(idPut).isEqualTo(employe.getId());
-    }
-    @Test
-    void testSetGetMatricule(){
-        //given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-        employe.setMatricule("T1211112");
-
-        //when
-        String idPut = ("T1211112");
-        //then
-        Assertions.assertThat(idPut).isEqualTo(employe.getMatricule());
-    }
-    @Test
-    void testSetGetPerformance(){
-        //given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-        employe.setPerformance(123);
-
-        //when
-        int per = (123);
-        //then
-        Assertions.assertThat(per).isEqualTo(employe.getPerformance());
-    }
-    @Test
-    void testSetGetTempsPartiel(){
-        //given
-        Employe employe = new Employe("Nicolas", "John", "T123432", LocalDate.of(2018, Month.JANUARY, 8), 1900d, 1,1.4);
-        employe.setTempsPartiel(123d);
-
-        //when
-        double tem = (123d);
-        //then
-        Assertions.assertThat(tem).isEqualTo(employe.getTempsPartiel());
-    }
 }
